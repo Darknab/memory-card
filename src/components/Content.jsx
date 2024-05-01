@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import movies from "../getData";
 import Card from "./Card";
 import { useState } from "react";
+import Score from "./Score";
 
 function shuffle(array) {
   for (let i = array.length - 1 ; i >= 0 ; i--) {
@@ -77,10 +78,8 @@ export default function Content() {
 
   return (
     <>
-      <div className="score">
-        <p>Score: {clicked.length}</p>
-        <p>Best Score: {bestScore}</p>
-      </div>
+      <Score score={clicked.length} bestScore={bestScore} />
+      <p className="description">Welcome to the Star Wars Memory Card game! click on images to earn point, but be careful not to click on the same image twice, the path to the dark side it is!</p>
       <div className="content">
         {displayedMovies.map(movie => {
         return <Card key={movie.id} id={movie.id} poster={movie.poster_path} title={movie.title} onClick={handleCardClick}/>
