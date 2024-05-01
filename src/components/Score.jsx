@@ -10,6 +10,6 @@ export default function Score({ score, bestScore }) {
 }
 
 Score.propTypes = {
-  score: PropTypes.number.isResuired,
+  score: PropTypes.number.isRequired,
   bestScore: PropTypes.number.isRequired,
 }
