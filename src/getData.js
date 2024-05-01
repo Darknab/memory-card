@@ -20,9 +20,9 @@ async function fetchData() {
   })
 }
 
-const data = await getData();
+const movies = await getData();
 
-export default data
+export default movies;
 
 
 
