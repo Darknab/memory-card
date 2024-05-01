@@ -1,8 +1,7 @@
 import { createPortal } from "react-dom";
 import PropTypes from 'prop-types';
-import movies from "../getData";
 import Card from "./Card";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Score from "./Score";
 
 function shuffle(array) {
@@ -12,18 +11,34 @@ function shuffle(array) {
   }
 }
 
-shuffle(movies);
-
 export default function Content() {
-  const [ displayedMovies, setDisplayedMovies ] = useState(movies);
+  const [ movies, setMovies ] = useState([]);
   const [ showModal, setShowModal ] = useState(false);
   const [ clicked, setClicked ] = useState([]);
   const [ bestScore, setBestScore ] = useState(0);
 
+  async function fetchData() {
+    const url = `https://api.themoviedb.org/3/collection/10?language=en-US`;
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
+      }
+    };
+
+    return fetch(url, options)
+      .then(res => res.json())
+      .then(data => setMovies(data.parts))
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, []);
 
   function handleCardClick(e) {
     shuffle(movies);
-    setDisplayedMovies([...movies]);
+    setMovies([...movies]);
     calculateScore(e.target.id);
   }
 
@@ -44,7 +59,6 @@ export default function Content() {
 
   function gameOver() {
     setShowModal(true);
-    console.log('game over!')
   }
 
   function ModalContent({ onClose }) {
@@ -81,7 +95,7 @@ export default function Content() {
       <Score score={clicked.length} bestScore={bestScore} />
       <p className="description">Welcome to the Star Wars Memory Card game! click on images to earn point, but be careful not to click on the same image twice, the path to the dark side it is!</p>
       <div className="content">
-        {displayedMovies.map(movie => {
+        {movies.map(movie => {
         return <Card key={movie.id} id={movie.id} poster={movie.poster_path} title={movie.title} onClick={handleCardClick}/>
         })}
       </div>
