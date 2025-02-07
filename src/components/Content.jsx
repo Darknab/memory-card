@@ -67,7 +67,7 @@ export default function Content() {
         <div className="modal-content">
           {clicked.length === 9 ? 
              <>
-              <h2>Congratulatios</h2>
+              <h2>Congratulations</h2>
               <p>The force is strong with you, you are a true jedi!</p>
              </> :
              <>
